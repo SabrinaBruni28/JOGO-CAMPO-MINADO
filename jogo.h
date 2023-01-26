@@ -10,4 +10,7 @@ void Inicia_Jogo(Jogo* jog, int q);
 void Print_Jogo(Jogo* jog, int q);
 int Revela_Quadrado(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2);
 int Existe_Bomba(Tabuleiro* tab, int i, int j,int q);
+int Existe_Espaco(Tabuleiro* tab, int i, int j,int q);
+int Existe_Numero(Tabuleiro* tab, int i, int j,int q);
 void Fim_De_Jogo(Jogo* jog, Tabuleiro* tab, int q);
+int Abrir_Espaco(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2);
