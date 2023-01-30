@@ -17,6 +17,8 @@ void Inicia_Tabuleiro(Tabuleiro* tab, int q){
             for(j=0;j<18;j++)
                 tab->matriz16[i][j] = '0';
     }
+    Coloca_Bomba(tab,q);
+    Completa_Tabuleiro(tab,q);
 }
 
 void Print_Tabuleiro(Tabuleiro* tab, int q){
