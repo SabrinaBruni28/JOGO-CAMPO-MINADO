@@ -76,9 +76,9 @@ int main(){
                 printf("\nPosicoes: ");
                 scanf("%d %d",&i,&j);
                 Tira_Alerta(&jog, q, i, j,&b);
-                Print_Tabuleiro(&tab, q);
                 Print_Jogo(&jog, q);
                 choice = Opcoes_Bandeira();
+                break;
             case 5:
                 choice = Opcoes_Finais();
                 break;

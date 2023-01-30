@@ -112,7 +112,7 @@ void Abrir_Espaco(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2, 
     int tam;
     if(q == 1){
         tam = 9;
-        if (posicao1 >= 1 && posicao1 < tam && posicao2 >= 1 && posicao2 < tam && jog->matriz8[posicao1][posicao2] == '0') {
+        if (Posicao_Valida(q, posicao1, posicao2) && jog->matriz8[posicao1][posicao2] == '0') {
             if(Existe_Espaco(tab, posicao1, posicao2, q) || Existe_Numero(tab, posicao1, posicao2, q)){
                 Abrir_Posicao(jog, tab, q, posicao1, posicao2);
                 *aberto += 1;
@@ -131,7 +131,7 @@ void Abrir_Espaco(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2, 
     }
     else if(q == 2){
         tam = 11;
-         if (posicao1 >= 1 && posicao1 < tam && posicao2 >= 1 && posicao2 < tam && jog->matriz10[posicao1][posicao2] == '0') {
+         if (Posicao_Valida(q, posicao1, posicao2) && jog->matriz10[posicao1][posicao2] == '0') {
             if(Existe_Espaco(tab, posicao1, posicao2, q) || Existe_Numero(tab, posicao1, posicao2, q)){
                 Abrir_Posicao(jog, tab, q, posicao1, posicao2);
                  *aberto += 1;
@@ -150,7 +150,7 @@ void Abrir_Espaco(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2, 
     }
     else if(q == 3){
         tam = 17;
-        if (posicao1 >= 1 && posicao1 < tam && posicao2 >= 1 && posicao2 < tam && jog->matriz16[posicao1][posicao2] == '0') {
+        if (Posicao_Valida(q, posicao1, posicao2) && jog->matriz16[posicao1][posicao2] == '0') {
             if(Existe_Espaco(tab, posicao1, posicao2, q) || Existe_Numero(tab, posicao1, posicao2, q)){
                 Abrir_Posicao(jog, tab, q, posicao1, posicao2);
                 *aberto += 1;
@@ -234,7 +234,7 @@ int Posicao_Valida(int q, int posicao1, int posicao2){
 }
 
 void Colocar_Alerta(Jogo* jog, int q, int posicao1, int posicao2, int *bandeira){
-    if(Ja_Foi_Aberto(jog, q, posicao1, posicao2) && !Existe_Alerta(jog, posicao1, posicao2, q)){
+    if(Posicao_Valida(q, posicao1, posicao2) && Ja_Foi_Aberto(jog, q, posicao1, posicao2) && !Existe_Alerta(jog, posicao1, posicao2, q)){
         if(q==1)
             jog->matriz8[posicao1][posicao2] = '@';
         else if(q==2)
@@ -245,7 +245,7 @@ void Colocar_Alerta(Jogo* jog, int q, int posicao1, int posicao2, int *bandeira)
     *bandeira += 1;
 }
 int Tira_Alerta(Jogo* jog, int q, int posicao1, int posicao2, int *bandeira){
-     if(Existe_Alerta(jog, posicao1, posicao2, q) && Ja_Foi_Aberto(jog, q, posicao1, posicao2)){
+     if(Posicao_Valida(q, posicao1, posicao2) && Existe_Alerta(jog, posicao1, posicao2, q)){
         if(q==1)
             jog->matriz8[posicao1][posicao2] = '0';
         else if(q==2)
@@ -255,6 +255,6 @@ int Tira_Alerta(Jogo* jog, int q, int posicao1, int posicao2, int *bandeira){
         *bandeira += 1;
         return 1;
     }
-    printf("POSICAO NAO CONTEM UM ALERTA!!!\n");
+    printf("\nPOSICAO NAO CONTEM UM ALERTA!!!\n");
     return 0;
 }
