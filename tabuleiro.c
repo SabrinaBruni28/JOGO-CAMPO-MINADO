@@ -163,3 +163,49 @@ void Completa_Tabuleiro(Tabuleiro* tab, int q){
                         tab->matriz16[i][j] = '_';
     }
 }
+
+
+int Existe_Bomba(Tabuleiro* tab, int i, int j,int q){
+    if(q==1){
+        if(tab->matriz8[i][j] == '!') return 1;
+        return 0; 
+    }
+    else if(q==2){
+        if(tab->matriz10[i][j] == '!') return 1;
+        return 0; 
+    }
+    else if(q==3){
+       if(tab->matriz16[i][j] == '!') return 1;
+        return 0;  
+    }
+}
+
+int Existe_Espaco(Tabuleiro* tab, int i, int j,int q){
+    if(q==1){
+        if(tab->matriz8[i][j] == '_') return 1;
+        return 0; 
+    }
+    else if(q==2){
+        if(tab->matriz10[i][j] == '_') return 1;
+        return 0; 
+    }
+    else if(q==3){
+       if(tab->matriz16[i][j] == '_') return 1;
+        return 0;  
+    }
+}
+
+int Existe_Numero(Tabuleiro* tab, int i, int j,int q){
+    if(q==1){
+        if(tab->matriz8[i][j] != '_' && tab->matriz8[i][j] != '!') return 1;
+        return 0; 
+    }
+    else if(q==2){
+        if(tab->matriz10[i][j] != '_' && tab->matriz10[i][j] != '!') return 1;
+        return 0; 
+    }
+    else if(q==3){
+       if(tab->matriz16[i][j] != '_' && tab->matriz16[i][j] != '!') return 1;
+        return 0;  
+    }
+}

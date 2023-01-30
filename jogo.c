@@ -54,59 +54,30 @@ int Revela_Quadrado(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2
             return 1;
         }
         else if(Existe_Espaco(tab, posicao1, posicao2, q))
-            Abrir_Espaco(jog, tab, q, posicao1, posicao2);
-        else if(Existe_Numero(tab, posicao1, posicao2, q))
+            Abrir_Espaco(jog, tab, q, posicao1, posicao2, aberto);
+        else if(Existe_Numero(tab, posicao1, posicao2, q)){
             Abrir_Posicao(jog, tab, q, posicao1, posicao2);
-        if(Ganhou_Jogo(jog, q,  posicao1, posicao2, aberto, bandeira)) return 1;
+            *aberto += 1;
+        }
+        if(Ganhou_Jogo(jog, q,  posicao1, posicao2, *aberto, *bandeira)) return 1;
         return 0;
     }
 }
 
-int Existe_Bomba(Tabuleiro* tab, int i, int j,int q){
+int Existe_Alerta(Jogo * jog, int i, int j,int q){
     if(q==1){
-        if(tab->matriz8[i][j] == '!') return 1;
+        if(jog->matriz8[i][j] == '@') return 1;
         return 0; 
     }
     else if(q==2){
-        if(tab->matriz10[i][j] == '!') return 1;
+        if(jog->matriz10[i][j] == '@') return 1;
         return 0; 
     }
     else if(q==3){
-       if(tab->matriz16[i][j] == '!') return 1;
+       if(jog->matriz16[i][j] == '@') return 1;
         return 0;  
     }
 }
-
-int Existe_Espaco(Tabuleiro* tab, int i, int j,int q){
-    if(q==1){
-        if(tab->matriz8[i][j] == '_') return 1;
-        return 0; 
-    }
-    else if(q==2){
-        if(tab->matriz10[i][j] == '_') return 1;
-        return 0; 
-    }
-    else if(q==3){
-       if(tab->matriz16[i][j] == '_') return 1;
-        return 0;  
-    }
-}
-
-int Existe_Numero(Tabuleiro* tab, int i, int j,int q){
-    if(q==1){
-        if(tab->matriz8[i][j] != '_' && tab->matriz8[i][j] != '!') return 1;
-        return 0; 
-    }
-    else if(q==2){
-        if(tab->matriz10[i][j] != '_' && tab->matriz10[i][j] != '!') return 1;
-        return 0; 
-    }
-    else if(q==3){
-       if(tab->matriz16[i][j] != '_' && tab->matriz16[i][j] != '!') return 1;
-        return 0;  
-    }
-}
-
 void Fim_De_Jogo(Jogo* jog, Tabuleiro* tab, int q){
     int i,j;
     if(q==1){
@@ -137,24 +108,63 @@ void Fim_De_Jogo(Jogo* jog, Tabuleiro* tab, int q){
     printf("VOCE PERDEU!!\n");
 }
 
-int Abrir_Espaco(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2){
+void Abrir_Espaco(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2, int* aberto){
     int tam;
-    if(q == 1) tam = 9;
-    else if(q == 2) tam = 11;
-    else if(q == 3) tam = 17;
-
-    if (posicao1 >= 1 && posicao1 < tam && posicao2 >= 1 && posicao2 < tam && jog->matriz8[posicao1][posicao2] == '0') {
-        if(Existe_Espaco(tab, posicao1, posicao2, q) || Existe_Numero(tab, posicao1, posicao2, q))
-            Abrir_Posicao(jog, tab, q, posicao1, posicao2);
-        if(Existe_Espaco(tab, posicao1, posicao2, q)){
-        Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 - 1);
-        Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2);
-        Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 + 1);
-        Abrir_Espaco(jog, tab, q, posicao1, posicao2 - 1);
-        Abrir_Espaco(jog, tab, q, posicao1, posicao2 + 1);
-        Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 - 1);
-        Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2);
-        Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 + 1);
+    if(q == 1){
+        tam = 9;
+        if (posicao1 >= 1 && posicao1 < tam && posicao2 >= 1 && posicao2 < tam && jog->matriz8[posicao1][posicao2] == '0') {
+            if(Existe_Espaco(tab, posicao1, posicao2, q) || Existe_Numero(tab, posicao1, posicao2, q)){
+                Abrir_Posicao(jog, tab, q, posicao1, posicao2);
+                *aberto += 1;
+            }
+            if(Existe_Espaco(tab, posicao1, posicao2, q)){
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 + 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1, posicao2 + 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2,aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 + 1,aberto);
+            }
+        }
+    }
+    else if(q == 2){
+        tam = 11;
+         if (posicao1 >= 1 && posicao1 < tam && posicao2 >= 1 && posicao2 < tam && jog->matriz10[posicao1][posicao2] == '0') {
+            if(Existe_Espaco(tab, posicao1, posicao2, q) || Existe_Numero(tab, posicao1, posicao2, q)){
+                Abrir_Posicao(jog, tab, q, posicao1, posicao2);
+                 *aberto += 1;
+            }
+            if(Existe_Espaco(tab, posicao1, posicao2, q)){
+               Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 + 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1, posicao2 + 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2,aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 + 1,aberto);
+            }
+        }
+    }
+    else if(q == 3){
+        tam = 17;
+        if (posicao1 >= 1 && posicao1 < tam && posicao2 >= 1 && posicao2 < tam && jog->matriz16[posicao1][posicao2] == '0') {
+            if(Existe_Espaco(tab, posicao1, posicao2, q) || Existe_Numero(tab, posicao1, posicao2, q)){
+                Abrir_Posicao(jog, tab, q, posicao1, posicao2);
+                *aberto += 1;
+            }
+            if(Existe_Espaco(tab, posicao1, posicao2, q)){
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 - 1, posicao2 + 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1, posicao2 + 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 - 1, aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2,aberto);
+                Abrir_Espaco(jog, tab, q, posicao1 + 1, posicao2 + 1,aberto);
+            }
         }
     }
 }
@@ -183,39 +193,24 @@ void Abrir_Posicao(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2)
         jog->matriz16[posicao1][posicao2] = tab->matriz16[posicao1][posicao2];
 }
 
-int Ganhou_Jogo(Jogo* jog, int q, int i, int j, int *aberto, int *bandeira){
+int Ganhou_Jogo(Jogo* jog, int q, int i, int j, int aberto, int bandeira){
     if(q==1){
-        if(*aberto == (8*8)-(2*8)){
-            printf("PARABENS!!!\n");
+        if(aberto == (8*8)-(2*8)){
+            printf("\n\nPARABENS!!!\n");
             printf("VOCE GANHOU!!!!!!\n");
             return 1;
-        if(jog->matriz8[i][j] == '@')
-            *bandeira++;
-        else if(jog->matriz8[i][j] != '0')
-            *aberto++;
         }
-
     }
     else if(q==2){
-        if(jog->matriz10[i][j] == '@')
-            *bandeira++;
-        else if(jog->matriz10[i][j] != '0')
-            *aberto++;
-            
-        if(*aberto == (10*10)-(2*10)){
-            printf("PARABENS!!!\n");
+        if(aberto == (10*10)-(2*10)){
+            printf("\n\nPARABENS!!!\n");
             printf("VOCE GANHOU!!!!!!\n");
             return 1;
         }
     }
     else if(q==3){
-        if(jog->matriz16[i][j] == '@')
-            *bandeira++;
-        else if(jog->matriz16[i][j] != '0')
-            *aberto++;
-            
-        if(*aberto == (16*16)-(2*16)){
-            printf("PARABENS!!!\n");
+        if(aberto == (16*16)-(2*16)){
+            printf("\n\nPARABENS!!!\n");
             printf("VOCE GANHOU!!!!!!\n");
             return 1;
         }
@@ -238,8 +233,8 @@ int Posicao_Valida(int q, int posicao1, int posicao2){
     return 0;
 }
 
-void Colocar_Bandeira(Jogo* jog, int q, int posicao1, int posicao2){
-    if(Ja_Foi_Aberto(jog, q, posicao1, posicao2)){
+void Colocar_Alerta(Jogo* jog, int q, int posicao1, int posicao2, int *bandeira){
+    if(Ja_Foi_Aberto(jog, q, posicao1, posicao2) && !Existe_Alerta(jog, posicao1, posicao2, q)){
         if(q==1)
             jog->matriz8[posicao1][posicao2] = '@';
         else if(q==2)
@@ -247,4 +242,19 @@ void Colocar_Bandeira(Jogo* jog, int q, int posicao1, int posicao2){
         else if(q==3)
             jog->matriz16[posicao1][posicao2] = '@';
     }
+    *bandeira += 1;
+}
+int Tira_Alerta(Jogo* jog, int q, int posicao1, int posicao2, int *bandeira){
+     if(Existe_Alerta(jog, posicao1, posicao2, q) && Ja_Foi_Aberto(jog, q, posicao1, posicao2)){
+        if(q==1)
+            jog->matriz8[posicao1][posicao2] = '0';
+        else if(q==2)
+            jog->matriz10[posicao1][posicao2] = '0';
+        else if(q==3)
+            jog->matriz16[posicao1][posicao2] = '0';
+        *bandeira += 1;
+        return 1;
+    }
+    printf("POSICAO NAO CONTEM UM ALERTA!!!\n");
+    return 0;
 }
