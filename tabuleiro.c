@@ -50,12 +50,11 @@ void Print_Tabuleiro(Tabuleiro* tab, int q){
 void Coloca_Bomba(Tabuleiro* tab, int q){
     int bombas = 0;
     int posicao1, posicao2;
-    int i,j;
     if(q==1){
         srand( (unsigned)time(NULL) );
         while(bombas!=16){
-            posicao1 = rand()%8;
-            posicao2 = rand()%8;
+            posicao1 = rand()%9;
+            posicao2 = rand()%9;
             if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
                 tab->matriz8[posicao1][posicao2] = '!';
                 bombas++;
@@ -65,8 +64,8 @@ void Coloca_Bomba(Tabuleiro* tab, int q){
     else if(q==2){
         srand( (unsigned)time(NULL) );
         while(bombas!=20){
-            posicao1 = rand()%10;
-            posicao2 = rand()%10;
+            posicao1 = rand()%11;
+            posicao2 = rand()%11;
             if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
                 tab->matriz10[posicao1][posicao2] = '!';
                 bombas++;
@@ -76,8 +75,8 @@ void Coloca_Bomba(Tabuleiro* tab, int q){
     else if(q==3){
         srand( (unsigned)time(NULL) );
         while(bombas!=32){
-            posicao1 = rand()%16;
-            posicao2 = rand()%16;
+            posicao1 = rand()%17;
+            posicao2 = rand()%17;
             if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
                 tab->matriz16[posicao1][posicao2] = '!';
                 bombas++;
