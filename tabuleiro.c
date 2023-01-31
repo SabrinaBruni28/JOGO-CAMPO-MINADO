@@ -50,22 +50,13 @@ void Print_Tabuleiro(Tabuleiro* tab, int q){
 void Coloca_Bomba(Tabuleiro* tab, int q){
     int bombas = 0;
     int posicao1, posicao2;
-    int i,j,existe;
+    int i,j;
     if(q==1){
         srand( (unsigned)time(NULL) );
         while(bombas!=16){
             posicao1 = rand()%8;
             posicao2 = rand()%8;
-            existe=0;
-            for(i=1;i<9;i++){
-                for(j=1;j<9;j++){
-                    if(tab->matriz8[i][j]=='!' && posicao1==i && posicao2==j){
-                        existe=1;
-                        break;
-                    }
-                }
-            }
-            if(posicao1!=0 && posicao2!=0 && existe==0){
+            if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
                 tab->matriz8[posicao1][posicao2] = '!';
                 bombas++;
             }
@@ -76,16 +67,7 @@ void Coloca_Bomba(Tabuleiro* tab, int q){
         while(bombas!=20){
             posicao1 = rand()%10;
             posicao2 = rand()%10;
-            existe=0;
-            for(i=1;i<11;i++){
-                for(j=1;j<11;j++){
-                    if(tab->matriz10[i][j]=='!' && posicao1==i && posicao2==j){
-                        existe=1;
-                        break;
-                    }
-                }
-            }
-            if(posicao1!=0 && posicao2!=0 && existe==0){
+            if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
                 tab->matriz10[posicao1][posicao2] = '!';
                 bombas++;
             }
@@ -96,72 +78,110 @@ void Coloca_Bomba(Tabuleiro* tab, int q){
         while(bombas!=32){
             posicao1 = rand()%16;
             posicao2 = rand()%16;
-            existe=0;
-            for(i=1;i<17;i++){
-                for(j=1;j<17;j++){
-                    if(tab->matriz16[i][j]=='!' && posicao1==i && posicao2==j){
-                        existe=1;
-                        break;
-                    }
-                }
-            }
-            if(posicao1!=0 && posicao2!=0 && existe==0){
+            if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
                 tab->matriz16[posicao1][posicao2] = '!';
                 bombas++;
             }
         }
     }
 }
+void Coloca_Espaco(Tabuleiro* tab, int q){
+    int linha,coluna;
+    if(q==1){
+        for(linha=1;linha<9;linha++)
+            for(coluna=1;coluna<9;coluna++)
+                if(tab->matriz8[linha][coluna]=='0')
+                    tab->matriz8[linha][coluna] = '_';
+    }
+    else if(q==2){
+        for(linha=1;linha<11;linha++)
+            for(coluna=1;coluna<11;coluna++)
+                if(tab->matriz10[linha][coluna]=='0')
+                    tab->matriz10[linha][coluna] = '_';
+    }
+    else if(q==3){
+        for(linha=1;linha<17;linha++)
+            for(coluna=1;coluna<17;coluna++)
+                if(tab->matriz16[linha][coluna]=='0')
+                    tab->matriz16[linha][coluna] = '_';
+    }
+}
+
 void Completa_Tabuleiro(Tabuleiro* tab, int q){
-    int i,j,linha,coluna;
+    int linha,coluna;
     if(q==1){
         for(linha=1;linha<9;linha++){
             for(coluna=1;coluna<9;coluna++){
-                for(int i=-1 ; i<=1 ; i++){
-                    for(int j=-1 ; j<=1 ; j++){
-                        if(tab->matriz8[linha+i][coluna+j] == '!' && tab->matriz8[linha][coluna] != '!')
-                                tab->matriz8[linha][coluna]++;
-                    }
+                if(!Existe_Bomba(tab, linha, coluna, q)){
+                    if(Existe_Bomba(tab, linha - 1, coluna - 1, q)) 
+                        tab->matriz8[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha - 1, coluna, q)) 
+                        tab->matriz8[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha - 1, coluna + 1, q))
+                        tab->matriz8[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha, coluna - 1, q)) 
+                        tab->matriz8[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha, coluna + 1, q)) 
+                        tab->matriz8[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna - 1, q)) 
+                        tab->matriz8[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna, q))
+                        tab->matriz8[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna + 1, q))
+                        tab->matriz8[linha][coluna]++;
                 }
             }
         }
-        for(i=1;i<9;i++)
-                for(j=1;j<9;j++)
-                    if(tab->matriz8[i][j]!='!' && tab->matriz8[i][j]=='0')
-                        tab->matriz8[i][j] = '_';
     }
     else if(q==2){
         for(linha=1;linha<11;linha++){
             for(coluna=1;coluna<11;coluna++){
-                for(int i=-1 ; i<=1 ; i++){
-                    for(int j=-1 ; j<=1 ; j++){
-                        if(tab->matriz10[linha+i][coluna+j] == '!' && tab->matriz10[linha][coluna] != '!')
-                                tab->matriz10[linha][coluna]++;
-                    }
+                if(!Existe_Bomba(tab, linha, coluna, q)){
+                    if(Existe_Bomba(tab, linha - 1, coluna - 1, q)) 
+                        tab->matriz10[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha - 1, coluna, q)) 
+                        tab->matriz10[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha - 1, coluna + 1, q))
+                        tab->matriz10[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha, coluna - 1, q)) 
+                        tab->matriz10[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha, coluna + 1, q)) 
+                        tab->matriz10[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna - 1, q)) 
+                        tab->matriz10[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna, q))
+                        tab->matriz10[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna + 1, q))
+                        tab->matriz10[linha][coluna]++;
                 }
             }
         }
-        for(i=1;i<11;i++)
-                for(j=1;j<11;j++)
-                    if(tab->matriz10[i][j]!='!' && tab->matriz10[i][j]=='0')
-                        tab->matriz10[i][j] = '_';
     }
     else if(q==3){
         for(linha=1;linha<17;linha++){
             for(coluna=1;coluna<17;coluna++){
-                for(int i=-1 ; i<=1 ; i++){
-                    for(int j=-1 ; j<=1 ; j++){
-                        if(tab->matriz16[linha+i][coluna+j] == '!' && tab->matriz16[linha][coluna] != '!')
-                                tab->matriz16[linha][coluna]++;
-                    }
+                if(!Existe_Bomba(tab, linha, coluna, q)){
+                    if(Existe_Bomba(tab, linha - 1, coluna - 1, q)) 
+                        tab->matriz16[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha - 1, coluna, q)) 
+                        tab->matriz16[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha - 1, coluna + 1, q))
+                        tab->matriz16[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha, coluna - 1, q)) 
+                        tab->matriz16[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha, coluna + 1, q)) 
+                        tab->matriz16[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna - 1, q)) 
+                        tab->matriz16[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna, q))
+                        tab->matriz16[linha][coluna]++;
+                    if(Existe_Bomba(tab, linha + 1, coluna + 1, q))
+                        tab->matriz16[linha][coluna]++;
                 }
             }
         }
-        for(i=1;i<17;i++)
-                for(j=1;j<17;j++)
-                    if(tab->matriz16[i][j]!='!' && tab->matriz16[i][j]=='0')
-                        tab->matriz16[i][j] = '_';
     }
+    Coloca_Espaco(tab, q);
 }
 
 
@@ -196,16 +216,23 @@ int Existe_Espaco(Tabuleiro* tab, int i, int j,int q){
 }
 
 int Existe_Numero(Tabuleiro* tab, int i, int j,int q){
-    if(q==1){
-        if(tab->matriz8[i][j] != '_' && tab->matriz8[i][j] != '!') return 1;
-        return 0; 
+    if(!Existe_Espaco(tab, i, j, q) && !Existe_Bomba(tab, i, j, q)) return 1;
+    return 0; 
+}
+
+int Posicao_Valida(int q, int posicao1, int posicao2, int i){
+     if(q==1){
+       if(posicao1>0 && posicao1 <9 && posicao2>0 && posicao2 <9) return 1;
     }
     else if(q==2){
-        if(tab->matriz10[i][j] != '_' && tab->matriz10[i][j] != '!') return 1;
-        return 0; 
+        if(posicao1>0 && posicao1 <11 && posicao2>0 && posicao2 <11) return 1;
     }
     else if(q==3){
-       if(tab->matriz16[i][j] != '_' && tab->matriz16[i][j] != '!') return 1;
-        return 0;  
+        if(posicao1>0 && posicao1 <17 && posicao2>0 && posicao2 <17) return 1;
     }
+    if(i){
+        printf("\nPOSICAO INVALIDA!!!!\n");
+        printf("Digite uma posicao valida\n");
+    }
+    return 0;
 }
