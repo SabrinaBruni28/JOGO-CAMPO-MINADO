@@ -230,8 +230,8 @@ int Posicao_Valida(int q, int posicao1, int posicao2, int i){
         if(posicao1>0 && posicao1 <17 && posicao2>0 && posicao2 <17) return 1;
     }
     if(i){
-        printf("\nPOSICAO INVALIDA!!!!\n");
-        printf("Digite uma posicao valida\n");
+        printf("\n\033[4;31mPOSICAO INVALIDA!!!!\n");
+        printf("Digite uma posicao valida\033[m\n");
     }
     return 0;
 }
