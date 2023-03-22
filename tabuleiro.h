@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+/*Inteiros que indeicam a quantidade de bombas em cada tamanho de tabuleiro.*/
+int n1 = 8, n2 = 13, n3 = 32;
+
 /*TAD que contem a parte logica do tabuleiro, sendo o background do jogo.*/
 typedef struct{
     char matriz8[10][10];

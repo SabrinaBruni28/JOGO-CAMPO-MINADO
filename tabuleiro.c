@@ -1,5 +1,6 @@
 #include "tabuleiro.h"
 
+
 void Inicia_Tabuleiro(Tabuleiro* tab, int q){
     int i,j;
     if(q==1){
@@ -52,7 +53,7 @@ void Coloca_Bomba(Tabuleiro* tab, int q){
     int posicao1, posicao2;
     if(q==1){
         srand( (unsigned)time(NULL) );
-        while(bombas!=16){
+        while(bombas!=n1){
             posicao1 = rand()%9;
             posicao2 = rand()%9;
             if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
@@ -63,7 +64,7 @@ void Coloca_Bomba(Tabuleiro* tab, int q){
     }
     else if(q==2){
         srand( (unsigned)time(NULL) );
-        while(bombas!=20){
+        while(bombas!=n2){
             posicao1 = rand()%11;
             posicao2 = rand()%11;
             if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){
@@ -74,7 +75,7 @@ void Coloca_Bomba(Tabuleiro* tab, int q){
     }
     else if(q==3){
         srand( (unsigned)time(NULL) );
-        while(bombas!=32){
+        while(bombas!=n3){
             posicao1 = rand()%17;
             posicao2 = rand()%17;
             if(Posicao_Valida(q,posicao1, posicao2,0) && !Existe_Bomba(tab, posicao1, posicao2, q)){

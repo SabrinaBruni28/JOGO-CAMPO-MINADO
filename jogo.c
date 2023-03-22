@@ -1,5 +1,6 @@
 #include "jogo.h"
 
+
 void Inicia_Jogo(Jogo* jog, int q){
     int i,j;
     if(q==1){
@@ -24,6 +25,7 @@ void Print_Jogo(Jogo* jog, int q){
     printf("\n\n");
     if(q==1){
         for(i=1;i<9;i++){
+            printf("\t");
             for(j=1;j<9;j++){
                 if(jog->matriz8[i][j] == '0')
                     printf("\033[1m%c \033[m",jog->matriz8[i][j]);
@@ -45,6 +47,7 @@ void Print_Jogo(Jogo* jog, int q){
     }
     else if(q==2){
         for(i=1;i<11;i++){
+            printf("\t");
             for(j=1;j<11;j++){
                 if(jog->matriz10[i][j] == '0')
                     printf("\033[1m%c \033[m",jog->matriz10[i][j]);
@@ -66,6 +69,7 @@ void Print_Jogo(Jogo* jog, int q){
     }
     else if(q==3){
         for(i=1;i<17;i++){
+            printf("\t");
             for(j=1;j<17;j++){
                 if(jog->matriz16[i][j] == '0')
                     printf("\033[1m%c \033[m",jog->matriz16[i][j]);
@@ -102,9 +106,9 @@ int Revela_Quadrado(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2
             Abrir_Posicao(jog, tab, q, posicao1, posicao2);
             *aberto += 1;
         }
-        if(Ganhou_Jogo(jog, q,  posicao1, posicao2, *aberto, *bandeira)) return 1;
-        return 0;
     }
+    if(Ganhou_Jogo(jog, q,  posicao1, posicao2, *aberto, *bandeira)) return 1;
+    return 0;
 }
 
 int Existe_Alerta(Jogo * jog, int i, int j,int q){
@@ -188,21 +192,21 @@ void Abrir_Posicao(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2)
 
 int Ganhou_Jogo(Jogo* jog, int q, int i, int j, int aberto, int bandeira){
     if(q==1){
-        if(aberto == (8*8)-(2*8) && bandeira == 2*8){
+        if(aberto == (8*8)-(n1) && bandeira == n1){
             printf("\n\n\033[4;32m******** PARABENS!!! ********\n");
             printf("******* VOCE GANHOU!!!!!! ********\033[m\n");
             return 1;
         }
     }
     else if(q==2){
-        if(aberto == (10*10)-(2*10) && bandeira == 2*10){
+        if(aberto == (10*10)-(n2) && bandeira == n2){
             printf("\n\n\033[4;32m******** PARABENS!!! ********\n");
             printf("******* VOCE GANHOU!!!!!! ********\033[m\n");
             return 1;
         }
     }
     else if(q==3){
-        if(aberto == (16*16)-(2*16) && bandeira == 2*16){
+        if(aberto == (16*16)-(n3) && bandeira == n3){
             printf("\n\n\033[4;32m******** PARABENS!!! ********\n");
             printf("******* VOCE GANHOU!!!!!! ********\033[m\n");
             return 1;
