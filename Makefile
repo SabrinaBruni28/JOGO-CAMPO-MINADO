@@ -1,3 +1,3 @@
 make all:
-	gcc main.c tabuleiro.c jogo.c -o run
+	gcc tabuleiro.c jogo.c main.c -o run
 	./run

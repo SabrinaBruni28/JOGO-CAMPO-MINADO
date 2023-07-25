@@ -2,8 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 
-/*Inteiros que indeicam a quantidade de bombas em cada tamanho de tabuleiro.*/
-int n1 = 8, n2 = 13, n3 = 32;
+/*Valores que indicam a quantidade de bombas em cada tamanho de tabuleiro.*/
+#define A 10
+#define B 15
+#define C 38
+/*Valores que indicam o tamanho da linha/coluna de cada matriz*/
+#define M8 10
+#define M10 12
+#define M16 18
 
 /*TAD que contem a parte logica do tabuleiro, sendo o background do jogo.*/
 typedef struct{

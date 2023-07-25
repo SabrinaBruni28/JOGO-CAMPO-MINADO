@@ -1,21 +1,20 @@
 #include "jogo.h"
 
-
 void Inicia_Jogo(Jogo* jog, int q){
     int i,j;
     if(q==1){
-        for(i=0;i<10;i++)
-            for(j=0;j<10;j++)
+        for(i=0;i<M8;i++)
+            for(j=0;j<M8;j++)
                 jog->matriz8[i][j] = '0';
     }
     else if(q==2){
-        for(i=0;i<12;i++)
-            for(j=0;j<12;j++)
+        for(i=0;i<M10;i++)
+            for(j=0;j<M10;j++)
                 jog->matriz10[i][j] = '0';
     }
      else if(q==3){
-        for(i=0;i<18;i++)
-            for(j=0;j<18;j++)
+        for(i=0;i<M16;i++)
+            for(j=0;j<M16;j++)
                 jog->matriz16[i][j] = '0';
     }
 }
@@ -24,9 +23,9 @@ void Print_Jogo(Jogo* jog, int q){
     int i,j;
     printf("\n\n");
     if(q==1){
-        for(i=1;i<9;i++){
+        for(i=1;i<M8-1;i++){
             printf("\t");
-            for(j=1;j<9;j++){
+            for(j=1;j<M8-1;j++){
                 if(jog->matriz8[i][j] == '0')
                     printf("\033[1m%c \033[m",jog->matriz8[i][j]);
                 else if(jog->matriz8[i][j] == '_')
@@ -46,9 +45,9 @@ void Print_Jogo(Jogo* jog, int q){
         }
     }
     else if(q==2){
-        for(i=1;i<11;i++){
+        for(i=1;i<M10-1;i++){
             printf("\t");
-            for(j=1;j<11;j++){
+            for(j=1;j<M10-1;j++){
                 if(jog->matriz10[i][j] == '0')
                     printf("\033[1m%c \033[m",jog->matriz10[i][j]);
                 else if(jog->matriz10[i][j] == '_')
@@ -68,9 +67,9 @@ void Print_Jogo(Jogo* jog, int q){
         }
     }
     else if(q==3){
-        for(i=1;i<17;i++){
+        for(i=1;i<M16-1;i++){
             printf("\t");
-            for(j=1;j<17;j++){
+            for(j=1;j<M16-1;j++){
                 if(jog->matriz16[i][j] == '0')
                     printf("\033[1m%c \033[m",jog->matriz16[i][j]);
                 else if(jog->matriz16[i][j] == '_')
@@ -130,9 +129,9 @@ int Existe_Alerta(Jogo * jog, int i, int j,int q){
 void Fim_De_Jogo(Jogo* jog, Tabuleiro* tab, int q){
     int i,j, tam;
 
-    if(q==1) tam = 9;
-    else if(q==2) tam = 11;
-    else if(q==3) tam = 17;
+    if(q==1) tam = M8-1;
+    else if(q==2) tam = M10-1;
+    else if(q==3) tam = M16-1;
 
     for(i=1;i<tam;i++){
         for(j=1;j<tam;j++){
@@ -141,8 +140,8 @@ void Fim_De_Jogo(Jogo* jog, Tabuleiro* tab, int q){
             else Errado(jog, tab, q, i, j);
         }
     }
-    printf("\n\n\033[4;32m******** FIM DE JOGO!!! ********\n");
-    printf("******** VOCE PERDEU!! ********\033[m\n");
+    printf("\n\n\033[4;32m ******** FIM DE JOGO!!! ********\n");
+    printf("******** VOCE PERDEU!! ******** \033[m\n");
 }
 
 void Abrir_Espaco(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2, int* aberto){
@@ -175,8 +174,8 @@ int Ja_Foi_Aberto(Jogo* jog, int q, int posicao1, int posicao2, int i){
         if(jog->matriz16[posicao1][posicao2] == '0') return 1;
     }
     if(i){
-        printf("\n\033[4;31mPOSICAO JA ABERTA OU COM BANDEIRA!!!!\n");
-        printf("Digite uma posicao que esteja fechada\033[m\n");
+        printf("\n\033[4;31m POSICAO JA ABERTA OU COM BANDEIRA!!!!\n");
+        printf("Digite uma posicao que esteja fechada \033[m\n");
     }
     return 0;
 }
@@ -192,23 +191,23 @@ void Abrir_Posicao(Jogo* jog, Tabuleiro* tab, int q, int posicao1, int posicao2)
 
 int Ganhou_Jogo(Jogo* jog, int q, int i, int j, int aberto, int bandeira){
     if(q==1){
-        if(aberto == (8*8)-(n1) && bandeira == n1){
-            printf("\n\n\033[4;32m******** PARABENS!!! ********\n");
-            printf("******* VOCE GANHOU!!!!!! ********\033[m\n");
+        if(aberto == (M8-2)*(M8-2)-(A) && bandeira == A){
+            printf("\n\n\033[4;32m ******** PARABENS!!! ********\n");
+            printf("******* VOCE GANHOU!!!!!! ******** \033[m\n");
             return 1;
         }
     }
     else if(q==2){
-        if(aberto == (10*10)-(n2) && bandeira == n2){
-            printf("\n\n\033[4;32m******** PARABENS!!! ********\n");
-            printf("******* VOCE GANHOU!!!!!! ********\033[m\n");
+        if(aberto == (M10-2)*(M10-2)-(B) && bandeira == B){
+            printf("\n\n\033[4;32m ******** PARABENS!!! ********\n");
+            printf("******* VOCE GANHOU!!!!!! ******** \033[m\n");
             return 1;
         }
     }
     else if(q==3){
-        if(aberto == (16*16)-(n3) && bandeira == n3){
-            printf("\n\n\033[4;32m******** PARABENS!!! ********\n");
-            printf("******* VOCE GANHOU!!!!!! ********\033[m\n");
+        if(aberto == (M16-2)*(M16-2)-(C) && bandeira == C){
+            printf("\n\n\033[4;32m ******** PARABENS!!! ********\n");
+            printf("******* VOCE GANHOU!!!!!! ******** \033[m\n");
             return 1;
         }
     }
@@ -237,7 +236,7 @@ int Tira_Alerta(Jogo* jog, int q, int posicao1, int posicao2, int *bandeira){
         *bandeira -= 1;
         return 1;
     }
-    printf("\n\033[4;31mPOSICAO NAO CONTEM UM ALERTA!!!\033[m\n");
+    printf("\n\033[4;31m POSICAO NAO CONTEM UM ALERTA!!! \033[m\n");
     return 0;
 }
 
