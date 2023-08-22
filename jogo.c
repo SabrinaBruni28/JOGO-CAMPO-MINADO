@@ -140,7 +140,7 @@ void Fim_De_Jogo(Jogo* jog, Tabuleiro* tab, int q){
             else Errado(jog, tab, q, i, j);
         }
     }
-    printf("\n\n\033[4;32m ******** FIM DE JOGO!!! ********\n");
+    printf("\n\n\033[4;31m ******** FIM DE JOGO!!! ********\n");
     printf("******** VOCE PERDEU!! ******** \033[m\n");
 }
 
